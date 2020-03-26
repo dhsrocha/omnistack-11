@@ -7,13 +7,14 @@ module.exports = {
     connection: {
       database: 'base',
       user:     'user',
-      password: 'pass'
+      password: 'password'
     },
     pool: {
       min: 2,
       max: 10
     },
     migrations: {
+      directory: './src/database/migrations',
       tableName: 'knex_migrations'
     }
   },
