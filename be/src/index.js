@@ -1,10 +1,9 @@
+"use strict";
 const express = require("express");
+const routes = require("./routes");
 
-const app = express();
+const app = express(routes);
 app.use(express.json())
 
-app.get("/", (_, res) => {
-  res.json({ msg: "Hello world!" });
-});
-
+app.use(routes);
 app.listen(3333);
