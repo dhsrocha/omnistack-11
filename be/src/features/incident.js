@@ -3,6 +3,9 @@ const connection = require("../database/connection");
 
 module.exports = {
   async index(req, res) {
+    const [rs] = await connection("incident").count();
+    res.header("X-Total-Count", rs.count);
+
     const { page = 1 } = req.query;
     const data = await connection("incident")
       .limit(5)
