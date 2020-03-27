@@ -8,9 +8,17 @@ module.exports = {
 
     const { page = 1 } = req.query;
     const data = await connection("incident")
+      .join("ngo", "ngo.id", "=", "incident.ngo_id")
       .limit(5)
       .offset((page - 1) * 5)
-      .select("*");
+      .select([
+        "incident.*",
+        "ngo.name",
+        "ngo.email",
+        "ngo.whatsapp",
+        "ngo.city",
+        "ngo.uf"
+      ]);
     console.info({ "Received retrieving request": data });
     res.json({ entities: data || {} });
   },
