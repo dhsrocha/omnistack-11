@@ -6,6 +6,10 @@ const connection = require("./database/connection");
 
 const router = express.Router();
 
+router.get("/ngo", async (_, req) => {
+  req.json({ entities: await connection("ngo").select("*") });
+});
+
 router.post("/ngo", async (req, res) => {
   const data = req.body;
   console.info({ "ngo creating request: ": data });
@@ -22,7 +26,7 @@ router.post("/ngo", async (req, res) => {
     uf
   });
 
-   res.json({ id });
+  res.json({ id });
 });
 
 module.exports = router;
