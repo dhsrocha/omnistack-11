@@ -2,8 +2,12 @@
 const connection = require("../database/connection");
 
 module.exports = {
-  async index(_, res) {
-    const data = await connection("incident").select("*");
+  async index(req, res) {
+    const { page = 1 } = req.query;
+    const data = await connection("incident")
+      .limit(5)
+      .offset((page - 1) * 5)
+      .select("*");
     console.info({ "Received retrieving request": data });
     res.json({ entities: data || {} });
   },
