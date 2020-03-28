@@ -1,17 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "./Header";
 
 function App() {
-  let counter = 0;
+  const [counter, setCounter] = useState(0);
   const increment = () => {
-    counter++;
-    console.info({ counter: counter });
-    return counter;
+    setCounter(counter + 1 );
   };
   const decrement = () => {
-    counter--;
-    console.info({ counter: counter });
-    return counter;
+    setCounter(counter - 1 );
   };
   return (
     <div>
