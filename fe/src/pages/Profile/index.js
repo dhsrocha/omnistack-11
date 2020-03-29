@@ -35,6 +35,14 @@ export default function Profile() {
       </button>
     </header>
   );
+  const removeIncident = id => {
+    api
+      .delete(`incident/${id}`, { headers: { Authorization: id } })
+      .then(r => alert("Incidente excluído."))
+      .catch(err => console.error("Erro ao excluir incidente."));
+
+    setIncidents(incidents.filter(i => i.id !== id));
+  };
   const conditionalListOf = entries => {
     return entries.length > 0 ? (
       <>
@@ -53,7 +61,7 @@ export default function Profile() {
                   currency: "BRL"
                 }).format(i.value)}
               </p>
-              <button type="button">
+              <button type="button" onClick={() => removeIncident(i.id)}>
                 <FiTrash2 size={20} color="a8a8b3" />
               </button>
             </li>
