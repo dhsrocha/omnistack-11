@@ -1,17 +1,30 @@
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import logo from "../../assets/logo.png";
+import api from "../../services/api";
 import styles from "./styles";
 
 export default function Incident() {
   // Hooks
   const navigation = useNavigation();
 
+  const [incidents, setIncidents] = useState([]);
+
+  // * Triggers the first parameter's callback when the second one's state changes.
+  useEffect(() => {
+    fetchIncidents();
+  }, []);
+
   // Handlers
-  const navigateToDetail = () => {
-    navigation.navigate("Detail");
+  const navigateToDetail = () => navigation.navigate("Detail");
+
+  const fetchIncidents = async () => {
+    api
+      .get("incident")
+      .then(r => setIncidents(r.data.entities))
+      .catch(err => console.error("Erro ao obter incidentes", err));
   };
 
   return (
@@ -29,13 +42,13 @@ export default function Incident() {
       </Text>
 
       <FlatList //
-        data={[1, 2, 3]}
+        data={incidents}
         style={styles.incidentList}
         // Options
         showsVerticalScrollIndicator={false}
         // Items
-        keyExtractor={incident => String(incident)} // Should be changed shortly
-        renderItem={() => (
+        keyExtractor={i => String(i.id)}
+        renderItem={({ item: incident }) => (
           <View
             style={[
               styles.incident, //
@@ -43,13 +56,13 @@ export default function Incident() {
             ]}
           >
             <Text style={styles.incidentProperty}>ONG</Text>
-            <Text style={styles.incidentValue}>APAD</Text>
+            <Text style={styles.incidentValue}>{incident.name}</Text>
 
             <Text style={styles.incidentProperty}>CASO:</Text>
-            <Text style={styles.incidentValue}>Cadelinha atropelada</Text>
+            <Text style={styles.incidentValue}>{incident.title}</Text>
 
             <Text style={styles.incidentProperty}>VALOR:</Text>
-            <Text style={styles.incidentValue}>R$ 120,00</Text>
+            <Text style={styles.incidentValue}>{incident.value}</Text>
 
             <TouchableOpacity //
               style={styles.detailsButton}

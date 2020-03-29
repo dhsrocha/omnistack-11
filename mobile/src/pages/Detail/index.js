@@ -1,10 +1,10 @@
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { composeAsync } from "expo-mail-composer";
 import React from "react";
-import { Image, Text, TouchableOpacity, View, Linking } from "react-native";
+import { Image, Linking, Text, TouchableOpacity, View } from "react-native";
 import logo from "../../assets/logo.png";
 import styles from "./styles";
-import { composeAsync } from "expo-mail-composer";
 
 export default function Detail() {
   const message =
