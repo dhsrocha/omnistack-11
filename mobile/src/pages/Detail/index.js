@@ -1,10 +1,17 @@
 import { Feather } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import logo from "../../assets/logo.png";
 import styles from "./styles";
 
 export default function Detail() {
+  // Hooks
+  const navigation = useNavigation();
+
+  // Handlers
+  const goBack = () => navigation.goBack();
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -12,7 +19,7 @@ export default function Detail() {
 
         <TouchableOpacity //
           style={styles.detailsButton}
-          onPress={() => {}}
+          onPress={goBack}
         >
           <Feather name="arrow-left" size={30} color="#E02041" />
         </TouchableOpacity>
