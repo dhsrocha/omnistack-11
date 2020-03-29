@@ -21,42 +21,54 @@ export default function Profile() {
       .catch(err => console.error("Erro ao obter incidentes", err));
   }, [id, name]);
 
+  // Handlers
+  const header = () => (
+    <header>
+      <img src={logo} alt="'Be the Hero" />
+      <span>Bem vindo, {name}</span>
+
+      <Link className="button" to="/incident/new">
+        Cadastrar novo caso
+      </Link>
+      <button>
+        <FiPower size={18} color="#E02041" />
+      </button>
+    </header>
+  );
+  const conditionalListOf = entries => {
+    return entries.length > 0 ? (
+      <>
+        <h1>Casos cadastrados</h1>
+        <ul>
+          {incidents.map(i => (
+            <li key={i.id}>
+              <strong>CASO:</strong>
+              <p>{i.title}</p>
+              <strong>DESCRIÇÃO:</strong>
+              <p>{i.description}</p>
+              <strong>VALOR:</strong>
+              <p>
+                {Intl.NumberFormat("pt-BR", {
+                  style: "currency",
+                  currency: "BRL"
+                }).format(i.value)}
+              </p>
+              <button type="button">
+                <FiTrash2 size={20} color="a8a8b3" />
+              </button>
+            </li>
+          ))}
+        </ul>
+      </>
+    ) : (
+      <h1>Sem incidentes cadastrados</h1>
+    );
+  };
+
   return (
     <div className="profile-container">
-      <header>
-        <img src={logo} alt="'Be the Hero" />
-        <span>Bem vindo, {name}</span>
-
-        <Link className="button" to="/incident/new">
-          Cadastrar novo caso
-        </Link>
-        <button>
-          <FiPower size={18} color="#E02041" />
-        </button>
-      </header>
-
-      <h1>Casos cadastrados</h1>
-
-      <ul>
-        {incidents.map(i => (
-          <li key={i.id}>
-            <strong>CASO:</strong>
-            <p>{i.title}</p>
-            <strong>DESCRIÇÃO:</strong>
-            <p>{i.description}</p>
-            <strong>VALOR:</strong>
-            <p>
-              {Intl.NumberFormat("pt-BR", {
-                style: "currency",
-                currency: "BRL"
-              }).format(i.value)}
-            </p>
-            <button type="button">
-              <FiTrash2 size={20} color="a8a8b3" />
-            </button>
-          </li>
-        ))}
-      </ul>
+      {header()}
+      {conditionalListOf(incidents)}
     </div>
   );
 }
