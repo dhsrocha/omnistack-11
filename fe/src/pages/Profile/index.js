@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FiPower, FiTrash2 } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import logo from "../../assets/logo.svg";
 import api from "../../services/api";
 import "./styles.css";
@@ -12,6 +12,7 @@ export default function Profile() {
 
   // Hooks
   const [incidents, setIncidents] = useState([]);
+  const history = useHistory();
 
   // * Triggers the first parameter's callback when the second one's state changes.
   useEffect(() => {
@@ -30,11 +31,15 @@ export default function Profile() {
       <Link className="button" to="/incident/new">
         Cadastrar novo caso
       </Link>
-      <button>
+      <button onClick={logout}>
         <FiPower size={18} color="#E02041" />
       </button>
     </header>
   );
+  const logout = () => {
+    localStorage.clear();
+    history.push("/");
+  };
   const removeIncident = id => {
     api
       .delete(`incident/${id}`, { headers: { Authorization: id } })
