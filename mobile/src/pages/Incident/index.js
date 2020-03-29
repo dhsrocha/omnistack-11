@@ -11,6 +11,7 @@ export default function Incident() {
   const navigation = useNavigation();
 
   const [incidents, setIncidents] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
 
   // * Triggers the first parameter's callback when the second one's state changes.
   useEffect(() => {
@@ -23,7 +24,10 @@ export default function Incident() {
   const fetchIncidents = async () => {
     api
       .get("incident")
-      .then(r => setIncidents(r.data.entities))
+      .then(r => {
+        setIncidents(r.data.entities);
+        setTotalCount(r.headers["X-Total-Count"])
+      })
       .catch(err => console.error("Erro ao obter incidentes", err));
   };
 
@@ -32,7 +36,7 @@ export default function Incident() {
       <View style={styles.header}>
         <Image source={logo} />
         <Text style={styles.container}>
-          Total de <Text styles={styles.headerTextBold}>0 casos</Text>.
+          Total de <Text styles={styles.headerTextBold}>{totalCount} casos</Text>.
         </Text>
       </View>
 
