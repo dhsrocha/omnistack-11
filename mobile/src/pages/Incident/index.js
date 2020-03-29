@@ -19,14 +19,16 @@ export default function Incident() {
   }, []);
 
   // Handlers
-  const navigateToDetail = () => navigation.navigate("Detail");
+  const navigateToDetail = incident =>
+    navigation.navigate("Detail", { incident });
 
   const fetchIncidents = async () => {
     api
       .get("incident")
       .then(r => {
         setIncidents(r.data.entities);
-        setTotalCount(r.headers["X-Total-Count"])
+        const count = r.headers["x-total-count"];
+        setTotalCount(count ? count : 0);
       })
       .catch(err => console.error("Erro ao obter incidentes", err));
   };
@@ -36,7 +38,8 @@ export default function Incident() {
       <View style={styles.header}>
         <Image source={logo} />
         <Text style={styles.container}>
-          Total de <Text styles={styles.headerTextBold}>{totalCount} casos</Text>.
+          Total de <Text styles={styles.headerTextBold}>{totalCount} </Text>
+          casos.
         </Text>
       </View>
 
@@ -75,7 +78,7 @@ export default function Incident() {
 
             <TouchableOpacity //
               style={styles.detailsButton}
-              onPress={navigateToDetail}
+              onPress={() => navigateToDetail(incident)}
             >
               <Text style={styles.detailsButtonText}>Ver mais detalhes</Text>
               <Feather name="arrow-right" size={16} color="#E02041" />
