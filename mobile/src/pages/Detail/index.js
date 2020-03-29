@@ -4,6 +4,7 @@ import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import logo from "../../assets/logo.png";
 import styles from "./styles";
+import { composeAsync } from "expo-mail-composer";
 
 export default function Detail() {
   // Hooks
@@ -11,6 +12,16 @@ export default function Detail() {
 
   // Handlers
   const goBack = () => navigation.goBack();
+
+  const sendEmail = () => {
+    composeAsync({
+      subject: "Heroi do caso: Cadelinha atropelada.",
+      recipients: ["dhsrocha@gmail.com"],
+      body:
+        `Olá ACAD, estou entrando em contato pois queria ajudar no caso ` +
+        `cadelinha atropelada" com o valor de R$ 120,00.`
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -51,7 +62,7 @@ export default function Detail() {
           </TouchableOpacity>
           <TouchableOpacity //
             style={styles.action}
-            onPress={() => {}}
+            onPress={sendEmail}
           >
             <Text style={styles.actionText}>E-mail</Text>
           </TouchableOpacity>
