@@ -45,20 +45,22 @@ export default StyleSheet.create({
     padding: 24,
     borderRadius: 8,
     backgroundColor: "#FFF",
+    marginTop: 48,
     marginBottom: 16
   },
 
   incidentProperty: {
     fontSize: 14,
     color: "#41414d",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    marginTop: 24
   },
 
   incidentValue: {
     marginTop: 8,
     fontSize: 15,
     marginBottom: 2,
-    color: "#737380",
+    color: "#737380"
   },
 
   detailsButton: {
