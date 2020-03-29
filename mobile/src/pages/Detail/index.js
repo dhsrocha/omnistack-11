@@ -1,12 +1,16 @@
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Image, Text, TouchableOpacity, View, Linking } from "react-native";
 import logo from "../../assets/logo.png";
 import styles from "./styles";
 import { composeAsync } from "expo-mail-composer";
 
 export default function Detail() {
+  const message =
+    `Olá ACAD, estou entrando em contato pois queria ajudar no caso ` +
+    `cadelinha atropelada" com o valor de R$ 120,00.`;
+
   // Hooks
   const navigation = useNavigation();
 
@@ -17,11 +21,12 @@ export default function Detail() {
     composeAsync({
       subject: "Heroi do caso: Cadelinha atropelada.",
       recipients: ["dhsrocha@gmail.com"],
-      body:
-        `Olá ACAD, estou entrando em contato pois queria ajudar no caso ` +
-        `cadelinha atropelada" com o valor de R$ 120,00.`
+      body: message
     });
   };
+
+  const sendWhatsapp = () =>
+    Linking.openURL(`whatsapp://send?phone=+5521981959753&text=${message}`);
 
   return (
     <View style={styles.container}>
@@ -56,7 +61,7 @@ export default function Detail() {
         <View style={styles.actions}>
           <TouchableOpacity //
             style={styles.action}
-            onPress={() => {}}
+            onPress={sendWhatsapp}
           >
             <Text style={styles.actionText}>Whatsapp</Text>
           </TouchableOpacity>
