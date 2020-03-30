@@ -13,6 +13,9 @@ export default function Incident() {
   const [incidents, setIncidents] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
 
+  const [page, setPage] = useState(1);
+  const [isLoading, setLoading] = useState(false);
+
   // * Triggers the first parameter's callback when the second one's state changes.
   useEffect(() => {
     fetchIncidents();
@@ -23,14 +26,18 @@ export default function Incident() {
     navigation.navigate("Detail", { incident });
 
   const fetchIncidents = async () => {
-    api
-      .get("incident")
-      .then(r => {
-        setIncidents(r.data.entities);
-        const count = r.headers["x-total-count"];
-        setTotalCount(count ? count : 0);
-      })
-      .catch(err => console.error("Erro ao obter incidentes", err));
+    if (isLoading) return;
+    if (totalCount > 0 && incidents.length === totalCount) return;
+
+    // Guarding
+    setLoading(true);
+    const resp = await api.get(`incident`, { params: { page } });
+    const count = resp.headers["x-total-count"];
+    setIncidents([...incidents, ...resp.data.entities]);
+    setTotalCount(count ? count : 0);
+    setPage(page + 1);
+    setLoading(false);
+    // Guarding
   };
 
   return (
@@ -53,6 +60,8 @@ export default function Incident() {
         style={styles.incidentList}
         // Options
         showsVerticalScrollIndicator={false}
+        onEndReached={fetchIncidents}
+        onEndReachedThreshold={0.2}
         // Items
         keyExtractor={i => String(i.id)}
         renderItem={({ item: incident }) => (
